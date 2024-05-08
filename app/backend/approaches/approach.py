@@ -30,6 +30,10 @@ from text import nonewlines
 
 @dataclass
 class Document:
+    """
+    Represents a document with various properties and methods for serialization.
+    """
+
     id: Optional[str]
     content: Optional[str]
     embedding: Optional[List[float]]
@@ -43,7 +47,14 @@ class Document:
     score: Optional[float] = None
     reranker_score: Optional[float] = None
 
+
     def serialize_for_results(self) -> dict[str, Any]:
+        """
+        Serializes the document object into a dictionary format suitable for results.
+        
+        Returns:
+            A dictionary containing the serialized document.
+        """
         return {
             "id": self.id,
             "content": self.content,
@@ -72,10 +83,18 @@ class Document:
 
     @classmethod
     def trim_embedding(cls, embedding: Optional[List[float]]) -> Optional[str]:
-        """Returns a trimmed list of floats from the vector embedding."""
+        """
+        Returns a trimmed list of floats from the vector embedding.
+
+        Args:
+            embedding: The vector embedding to be trimmed.
+
+        Returns:
+            A trimmed list of floats from the vector embedding, or None if the embedding is empty.
+        """
         if embedding:
             if len(embedding) > 2:
-                # Format the embedding list to show the first 2 items followed by the count of the remaining items."""
+                # Format the embedding list to show the first 2 items followed by the count of the remaining items.
                 return f"[{embedding[0]}, {embedding[1]} ...+{len(embedding) - 2} more]"
             else:
                 return str(embedding)
